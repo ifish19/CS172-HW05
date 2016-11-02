@@ -1,10 +1,13 @@
 #include<iostream>
 #include<string>
+#include"Vector.h"
+#include<ctime>
 using namespace std;
+
 
 // EX05_01
 template <typename T>
-T linearSearch(const T list[], T key, int arraySize)
+int linearSearch(const T list[], T key, int arraySize)
 {
 	for (int i = 0; i < arraySize; i++)
 	{
@@ -18,16 +21,38 @@ T linearSearch(const T list[], T key, int arraySize)
 template <typename T>
 bool isSorted(const T list[], int size)
 {
-	int numNotSort;
+	int numNotSort = 0;
 	for (int i = 0; i < size; i++)
 	{
-		if (list[i] < list[i -1])
-			numNotSort++;
+		T currentMin = list[i];
+		for (int j = i + 1; j < size; j++)
+		{
+			if (currentMin > list[j])
+				numNotSort++;
+		}
 	}
 	if (numNotSort == 0)
 		return true;
 	else
 		return false;
+}
+
+// EX05_04
+template<typename T>
+void shuffle(vector<T>& v)
+{
+	T* temp = new T[v.size];
+	int num;
+	for (int i = 0; i < v.size(); i++)
+	{
+		srand(time(0));
+		num = rand() % v.size();
+		temp[i] = v.at(num);
+	}
+
+	v.swap(temp);
+
+	delete [] temp;
 }
 	
 int main()
@@ -39,24 +64,52 @@ int main()
 	////////////////////////////////////
 
 	int size = 5;
-	int array1[] = {1, 5, 9, 3, 2};
-	double array2[] = {3.3, 6.4, 2.2, 2.9, 4.8903};
-	string array3[] = {"How", "does", "this", "work", "?"};
+	int arrayI[] = {1, 5, 9, 3, 2};
+	double arrayD[] = {3.3, 6.4, 2.2, 2.9, 4.8903};
+	string arrayS[] = {"How", "does", "this", "work", "?"};
 
 	int n1;
 	cout << "Enter int to search: ";
 	cin >> n1;
-	cout << "Search results: " << linearSearch(array1, n1, size) << endl;
+	cout << "Search results: " << linearSearch(arrayI, n1, size) << endl;
 
 	double n2;
 	cout << "Enter double to search: ";
 	cin >> n2;
-	cout << "Search results: " << linearSearch(array2, n2, size) << endl;
+	cout << "Search results: " << linearSearch(arrayD, n2, size) << endl;
 
 	string n3;
 	cout << "Enter string to search: ";
 	cin >> n3;
-	cout << "Search results: " << linearSearch(array3, n3, size) << endl;
+	cout << "Search results: " << linearSearch(arrayS, n3, size) << endl;
 
 	////////////////////////////////////////////////////////////////////////////////////////
+
+	// EX05_02
+
+	cout << "arrayI sorted: " << isSorted(arrayI, size) << endl;
+	cout << "arrayD sorted: " << isSorted(arrayD, size) << endl;
+	cout << "arrayS sorted: " << isSorted(arrayS, size) << endl;
+
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	// EX05_04
+
+	vector<int> v;
+
+	int n;
+	for (int i = 0; i < 10; i++)
+	{
+		cout << "Enter int " << i << " of 10: ";
+		cin >> n;
+		v.push_back(n);
+	}
+
+	shuffle(v);
+
+	cout << "Shuffled result: ";
+	for(int i = 0; i < v.size(); i++)
+		cout << v.at(i);
+	cout << endl;
 }
+	
